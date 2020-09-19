@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from .models import Post
+from .forms import PostForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -22,4 +24,32 @@ class PostDetailView(View):
         # 取得したデータをテンプレートに渡す
         return render(request, 'app/post_detail.html', {
             'post_data': post_data
+        })
+
+class CreatePostView(LoginRequiredMixin, View):
+    # PostFormからフォームデータを取得し、テンプレートに渡す
+    def get(self, request, *args, **kwargs):
+        form = PostForm(request.POST or None)
+
+        return render(request, 'app/post_form.html', {
+            'form': form
+        })
+
+    # 送信ボタンを押したときにpost関数がコールされる
+    def post(self, request, *args, **kwargs):
+        # PostFormからフォームデータを取得し、バリデーションを行う
+        form = PostForm(request.POST or None)
+
+        if form.is_valid():
+            # 入力されたフォームデータを取得して、新規データとしてデータベースに書き込む
+            post_data = Post()
+            post_data.author = request.user
+            post_data.title = form.cleaned_data["title"]
+            post_data.content = form.cleaned_data["content"]
+            post_data.save()
+            # 送信後はリダイレクトして詳細画面に遷移する
+            return redirect('post_detail', post_data.id)
+
+        return render(request, 'app/post_form.html', {
+            'form':form
         })

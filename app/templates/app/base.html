@@ -23,7 +23,7 @@ cssを読み込むときは{% static 'css/style.css' %}とかく -->
                 <!-- ユーザーのログイン状態を判定するには、user.is_authenticatedを使用 -->
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="">投稿</a>
+                        <a class="nav-link" href="{% url 'post_new' %}">投稿</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">ログアウト</a>
