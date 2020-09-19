@@ -53,3 +53,35 @@ class CreatePostView(LoginRequiredMixin, View):
         return render(request, 'app/post_form.html', {
             'form':form
         })
+
+class PostEditView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        post_data = Post.objects.get(id=self.kwargs['pk'])
+        form = PostForm(
+            request.POST or None,
+            # initialオプションを使うことでフォームに初期データを表示
+            initial = {
+                'title': post_data.title,
+                'content': post_data.content,
+            }
+        )
+
+        return render(request, 'app/post_form.html', {
+            'form': form
+        })
+    
+    # 新規投稿と同様に編集画面で投稿ボタンを押すとpost関数が呼ばれる
+    # データをバリデーションして、フォームの内容をデータベースに書き込む
+    def post(self, request, *args, **kwargs):
+        form = PostForm(request.POST or None)
+
+        if form.is_valid():
+            post_data = Post.objects.get(id=self.kwargs['pk'])
+            post_data.title = form.cleaned_data['title']
+            post_data.content = form.cleaned_data['content']
+            post_data.save()
+            return redirect('post_detail', self.kwargs['pk'])
+        
+        return render(request, 'app/post_form.html', {
+            'form': form
+        })

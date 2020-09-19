@@ -13,5 +13,7 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     # pkには投稿のIDが入るため、どの投稿の詳細画面かがわかる
     path('post/<int:pk>', views.PostDetailView.as_view(), name="post_detail"),
-    path("post/new/", views.CreatePostView.as_view(), name="post_new")
+    path("post/new/", views.CreatePostView.as_view(), name="post_new"),
+    # 投稿の詳細と同様に、pkにIDが入り、どの投稿なのか判断している
+    path("post/<int:pk>/edit/", views.PostEditView.as_view(), name="post_edit"),
 ]
