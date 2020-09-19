@@ -10,5 +10,7 @@ as_viewメソッドは、クラス汎用ビューを関数化する
 nameにはルーティング二名前を付けており、これをすることで、名前からurlを逆引きすることができる
 """
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='index')
+    path('', views.IndexView.as_view(), name='index'),
+    # pkには投稿のIDが入るため、どの投稿の詳細画面かがわかる
+    path('post/<int:pk>', views.PostDetailView.as_view(), name="post_detail")
 ]

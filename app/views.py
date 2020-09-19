@@ -14,3 +14,12 @@ class IndexView(View):
         return render(request, 'app/index.html', {
             'post_data': post_data,
         })
+
+class PostDetailView(View):
+    def get(self, request, *args, **kwargs):
+        # self.kwargs['pk']でURLのIDを取得することができる
+        post_data = Post.objects.get(id=self.kwargs['pk'])
+        # 取得したデータをテンプレートに渡す
+        return render(request, 'app/post_detail.html', {
+            'post_data': post_data
+        })
