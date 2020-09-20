@@ -33,7 +33,7 @@ cssを読み込むときは{% static 'css/style.css' %}とかく -->
                         <a class="nav-link" href="">サインアップ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">ログイン</a>
+                        <a class="nav-link" href="{% url 'account_login' %}">ログイン</a>
                     </li>
                 {% endif %}
             </ul>

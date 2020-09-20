@@ -19,5 +19,7 @@ from django.urls import path, include
 # urlpatternsを使用して、path関数の引数を順番にチェックする
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('app.urls'))
+    path('', include('app.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('allauth.urls')),
 ]

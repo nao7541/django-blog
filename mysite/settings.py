@@ -40,6 +40,12 @@ INSTALLED_APPS = [
     # 以下を追加
     'widget_tweaks',
     'app',
+    "accounts",
+    # django-allauthを使用するために追加
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +127,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# django-allauthを使用するための設定
+
+SITE_ID = 1
+# リダイレクト先を指定(今回はトップページにリダイレクトさせる)
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+# アカウントを作る際のメールアドレス認証を設定(今回は設定しないが追加する場合はmandatoryに変更)
+ACCOUNT_EMAIL_VERIFICATION = 'none'
