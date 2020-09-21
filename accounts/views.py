@@ -16,3 +16,7 @@ class LogoutView(views.LogoutView):
             # self.logout()でログアウトすることが可能
             self.logout()
         return redirect('/')
+
+# allauthのSighupViewクラスを継承する
+class SignupView(views.SignupView):
+    template_name = 'accounts/signup.html'
