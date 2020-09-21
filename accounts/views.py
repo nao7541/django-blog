@@ -7,3 +7,12 @@ from allauth.account import views
 class LoginView(views.LoginView):
     # template_nameを指定するだけで簡単にログイン機能が使用できる
     template_name = 'accounts/login.html'
+
+class LogoutView(views.LogoutView):
+    template_name = 'accounts/logout.html'
+
+    def post(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            # self.logout()でログアウトすることが可能
+            self.logout()
+        return redirect('/')
