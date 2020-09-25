@@ -5,3 +5,5 @@ class PostForm(forms.Form):
     title = forms.CharField(max_length=30, label="タイトル")
     # 複数行のフォームを想定する場合は引数にwidget=forms.Textarea()を追加
     content = forms.CharField(label="内容", widget=forms.Textarea())
+    # 画像をアップロードするフォームを追加
+    image = forms.ImageField(label='イメージ画像', required=False)

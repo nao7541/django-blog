@@ -46,6 +46,10 @@ class CreatePostView(LoginRequiredMixin, View):
             post_data.author = request.user
             post_data.title = form.cleaned_data["title"]
             post_data.content = form.cleaned_data["content"]
+            # 画像アップロード用
+            # フォームから画像を取得する方法はrequest.FILESを使用
+            if request.FILES:
+                post_data.image = request.FILES.get('image')
             post_data.save()
             # 送信後はリダイレクトして詳細画面に遷移する
             return redirect('post_detail', post_data.id)
@@ -63,13 +67,15 @@ class PostEditView(LoginRequiredMixin, View):
             initial = {
                 'title': post_data.title,
                 'content': post_data.content,
+                # 画像の初期データは他のデータと同様に指定する
+                'image': post_data.image,
             }
         )
 
         return render(request, 'app/post_form.html', {
             'form': form
         })
-    
+
     # 新規投稿と同様に編集画面で投稿ボタンを押すとpost関数が呼ばれる
     # データをバリデーションして、フォームの内容をデータベースに書き込む
     def post(self, request, *args, **kwargs):
@@ -79,9 +85,11 @@ class PostEditView(LoginRequiredMixin, View):
             post_data = Post.objects.get(id=self.kwargs['pk'])
             post_data.title = form.cleaned_data['title']
             post_data.content = form.cleaned_data['content']
+            if request.FILES:
+                post_data.image = request.FILES.get('image')
             post_data.save()
             return redirect('post_detail', self.kwargs['pk'])
-        
+
         return render(request, 'app/post_form.html', {
             'form': form
         })
@@ -93,7 +101,7 @@ class PostDeleteView(LoginRequiredMixin, View):
         return render(request, 'app/post_delete.html', {
             'post_data': post_data
         })
-    
+
     def post(self, request, *args, **kwargs):
         post_data = Post.objects.get(id=self.kwargs['pk'])
         # deleteを使うことでデータベースからデータを削除できる

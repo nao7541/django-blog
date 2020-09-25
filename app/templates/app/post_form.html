@@ -8,12 +8,18 @@
     <h2>投稿</h2>
 </div>
 
-<!-- 投稿するボタンを押したときにビューのpost関数がコールされる -->
-<form method="post">
+<!--
+投稿するボタンを押したときにビューのpost関数がコールされる
+また、画像をフォームからアップロードする際には必ずenctype="multupart/form-data"を追加
+-->
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="formpost">
         <!-- フォームにクラスとplaceholderを追加することでCSSでカスタマイズしやすくなる -->
         {% render_field form.title class="form-control" placeholder="タイトルを入力" %}
+    </div>
+    <div class="formpost">
+        {{ form.image }}
     </div>
     <div class="formpost">
         {% render_field form.content class="form-control" placeholder="本文を入力" %}

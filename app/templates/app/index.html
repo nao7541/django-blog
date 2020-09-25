@@ -11,7 +11,11 @@ baseファイルで書いたblock名と同じ部分が書き変わる
     <div class="col-md-8">
         <!-- ビューで作成したpost_dataはリスト形式なのでループして中身を取得 -->
         {% for post in post_data %}
-            <div class="card mb-4">
+            <div class="card mb-4 index">
+                {% if post.image %}
+                    <!-- 画像を指定する際はpost.image.urlとurlまで記載する -->
+                    <img  class="card-img-top index-img" src="{{ post.image.url }}" alt="">
+                {% endif %}
                 <div class="card-body">
                     <h2 class="card-title">{{ post.title }}</h2>
                     <!-- contentの中身を100文字まで表示する -->

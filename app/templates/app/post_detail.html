@@ -6,6 +6,9 @@
 <hr>
 <p>{{ post_data.created }} by {{ post_data.author }}</p>
 <hr>
+{% if post_data.image %}
+    <img  class=rounded detail-img src="{{ post_data.image.url }}" alt="">
+{% endif %}
 <p>{{ post_data.content|linebreaksbr }}</p>
 <!-- ユーザーがログイン状態であればボタンを表示 -->
 {% if user.is_authenticated %}
