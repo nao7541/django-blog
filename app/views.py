@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.db.models import Q
+from functools import reduce
+from operator import and_
 from .models import Post, Category
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -122,4 +125,28 @@ class CategoryView(View):
         post_data = Post.objects.order_by('-id').filter(category=category_data)
         return render(request, 'app/index.html', {
             'post_data': post_data
+        })
+
+# 検索用のビューを追加
+class SearchView(View):
+    def get(self, request, *args, **kwargs):
+        post_data = Post.objects.order_by('-id')
+        keyword = request.GET.get('keyword')
+
+        if keyword:
+            # 全角と半角の空文字列を除外する
+            exclusion_list = set([' ','　'])
+            quety_list = ''
+            for word in keyword:
+                if not word in exclusion_list:
+                    quety_list += word
+            # reduce関数は、関数内関数を扱うことができる
+            # and_は第二引数に、リスト内包表記で[keyword]をひとつずつQオブジェクトに与えている
+            query = reduce(and_, [Q(title__icontains=q) | Q(content__icontains=q) for q in quety_list])
+            # 東湖データをフィルターにかけてデータを取得する
+            post_data = post_data.filter(query)
+
+        return render(request, 'app/index.html', {
+            'keyword': keyword,
+            'post_data': post_data,
         })

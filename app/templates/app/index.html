@@ -9,6 +9,9 @@ baseファイルで書いたblock名と同じ部分が書き変わる
 
 <div class="row my-4">
     <div class="col-md-8">
+        {% if keyword %}
+            <h4 class="mb-4">「{{ keyword }}」の検索結果</h4>
+        {% endif %}
         <!-- ビューで作成したpost_dataはリスト形式なのでループして中身を取得 -->
         {% for post in post_data %}
             <div class="card mb-4 index">
@@ -40,6 +43,17 @@ baseファイルで書いたblock名と同じ部分が書き変わる
                     初めてDjangoを触る方向けのチュートリアルです。
                     最小限の昨日を構築してDjangoを学習しましょう
                 </p>
+            </div>
+        </div>
+
+        <div class="card-my-4">
+            <h5 class="card-header">検索</h5>
+            <div class="card-body">
+                <!-- 検索ボタンを推すことで、inputの値がビューに送られる -->
+                <form  method="get" action="{% url "search" %}" class="input-group">
+                    <input type="text" class="form-control", name="keyword", placeholder="ブログを検索">
+                    <button class="btn btn-warning ml-2" type="submit">検索</button>
+                </form>
             </div>
         </div>
 

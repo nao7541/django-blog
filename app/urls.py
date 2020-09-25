@@ -19,4 +19,6 @@ urlpatterns = [
     path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name="post_delete"),
     # カテゴリ用のurlを作成
     path('category/<str:category>/', views.CategoryView.as_view(), name='category'),
+    # 検索用のurlを作成
+    path('search/', views.SearchView.as_view(), name='search'),
 ]
