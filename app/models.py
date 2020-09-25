@@ -3,11 +3,20 @@ from django.conf import settings
 from django.utils import timezone
 
 # Create your models here.
-# 投稿機能のモデルを作成
 
+# カテゴリモデルを作成
+class Category(models.Model):
+    name = models.CharField("カテゴリ", max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
+# 投稿機能のモデルを作成
 class Post(models.Model):
     # ForeignKeyを利用してログインしているユーザーに紐づける
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, verbose_name='カテゴリ', on_delete=models.PROTECT)
     title = models.CharField("タイトル", max_length=200)
     # 画像フィールドを追加
     # upload_toで画像のアップロード先を指定
